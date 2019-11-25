@@ -1,7 +1,7 @@
 const fs = require('fs')
 const cwd = require('process').cwd()
 const path = require('path')
-const exec = require('child_process').execSync
+const exec = require('child_process').exec
 
 const appPath = path.normalize(cwd.slice(0, cwd.lastIndexOf('node_modules')))
 
@@ -11,6 +11,9 @@ if (fs.existsSync(packageJsonPath)) {
   const packageJson = JSON.parse(fs.readFileSync(packageJsonPath))
 
   if (packageJson.scripts && packageJson.scripts.postinstall) {
-    exec('yarn run postinstall', {cwd: appPath})
+    exec('yarn run postinstall', {cwd: appPath}, (error, stdout) => {
+      console.log({error})
+      console.log({stdout})
+    })
   }
 }
